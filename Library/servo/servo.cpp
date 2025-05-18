@@ -1,0 +1,26 @@
+#include "servo.hpp"
+
+Servo::Servo(const uint pin) : Servo_PIN{pin}
+{
+    servo_enable(Servo_PIN);
+}
+
+void Servo::set_angle(int angle)
+{
+    servo_set_position(Servo_PIN, angle);
+}
+
+void Servo::lookRight()
+{
+    this->set_angle(10); //or 170
+}
+
+void Servo::lookLeft()
+{
+    this->set_angle(170); //or 10
+}
+
+void Servo::lookForward()
+{
+    this->set_angle(90);
+}

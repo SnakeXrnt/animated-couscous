@@ -13,7 +13,7 @@ class Motor
 private:
     /* data */
 public:
-    Motor(/* args */);
+    Motor();
     void set(const ushort Dir, uint8_t Speed)
 };
 
