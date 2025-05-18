@@ -16,6 +16,12 @@
 #ifndef __MOTORDRIVER_H_
 #define __MOTORDRIVER_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
+
 #include "../Config/DEV_Config.h"
 #include "PCA9685.h"
 
@@ -48,4 +54,7 @@ void Motor_Run(UBYTE motor, DIR dir, UWORD speed);
 void Motor_Stop(UBYTE motor);
 void Motor_test(void);
 
+#ifdef __cplusplus
+}
+#endif
 #endif

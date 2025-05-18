@@ -14,6 +14,11 @@
 #ifndef __PCA9685_H_
 #define __PCA9685_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 #include "../Config/DEV_Config.h"
 
 //GPIO config
@@ -53,4 +58,8 @@ void PCA9685_SetPWMFreq(UWORD freq);
 void PCA9685_SetPwmDutyCycle(UBYTE channel, UWORD pulse);
 void PCA9685_SetLevel(UBYTE channel, UWORD value);
 
+#ifdef __cplusplus
+}
+
+#endif
 #endif

@@ -29,6 +29,11 @@
 #ifndef _DEV_CONFIG_H_
 #define _DEV_CONFIG_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 #include "pico/stdlib.h"
 #include "hardware/spi.h"
 #include "stdio.h"
@@ -81,5 +86,9 @@ void DEV_SET_PWM(uint8_t Value);
 UBYTE DEV_Module_Init(void);
 void DEV_Module_Exit(void);
 
+#ifdef __cplusplus
+}
+
+#endif
 
 #endif

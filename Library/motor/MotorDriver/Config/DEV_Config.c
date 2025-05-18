@@ -28,6 +28,7 @@
 ******************************************************************************/
 #include "DEV_Config.h"
 
+
 #define SPI_PORT spi1
 #define I2C_PORT i2c0
 
@@ -181,7 +182,7 @@ UBYTE DEV_Module_Init(void)
 }
 
 void DEV_SET_PWM(uint8_t Value){
-    if(Value<0 || Value >100){
+    if(Value<2 || Value >100){
         printf("DEV_SET_PWM Error \r\n");
     }else {
         pwm_set_chan_level(slice_num, PWM_CHAN_B, Value);

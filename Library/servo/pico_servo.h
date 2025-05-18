@@ -26,7 +26,7 @@
 #define PICO_SERVO_H
 
 #ifdef __cplusplus
-//extern "C" {
+extern "C" {
 #endif
 
 #include "hardware/clocks.h"
@@ -62,7 +62,7 @@ int
 servo_set_position(const uint gpio_pin, const uint16_t degree);
 
 #ifdef __cplusplus
-//}
+}
 #endif
 
 #endif
