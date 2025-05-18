@@ -1,11 +1,13 @@
 cmake_minimum_required(VERSION 3.10.0)
-project(infared VERSION 0.1.0 LANGUAGES C CXX)
+project(infrared VERSION 0.1.0 LANGUAGES C CXX)
 
-add_library(infared infrared.cpp)
+add_library(infrared
+    infrared.cpp
+)
 
-include(CTest)
-enable_testing()
+target_include_directories(infrared PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
-set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-include(CPack)
+# Link with pico_stdlib
+target_link_libraries(infrared pico_stdlib)

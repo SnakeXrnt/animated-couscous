@@ -7,9 +7,9 @@
 class InfaredSensor
 {
 private:
-    const uint pin_; 
+    const uint pin_;
 public:
-    InfaredSensor(uint gpio_pin) : pin_(gpio_pin)
+    InfaredSensor(uint gpio_pin);
     void init();
     bool detected();
 };

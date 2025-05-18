@@ -2,10 +2,10 @@
 
 Motor::Motor()
 {
-    Motor_Init(void);
+    Motor_Init();
 }
 
-void Motor::set(const ushort Dir, uint8_t Speed)
+void Motor::set(const uint Dir, uint8_t Speed)
 {
     switch (Dir) {
         case Forward:

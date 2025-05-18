@@ -1,33 +1,41 @@
 cmake_minimum_required(VERSION 3.13)
 include(pico_sdk_import.cmake)
 
-project(TresureRobot VERSION 0.1.0 LANGUAGES C CXX)
+project(autonomous_car_project)
 
+# Initialize the SDK
 pico_sdk_init()
 
-add_executable(TresureRobot
-    main.cpp
-)
-
-# Add library subdirectories
+# Add all library subdirectories
 add_subdirectory(Library/infared)
 add_subdirectory(Library/motor)
 add_subdirectory(Library/servo)
 add_subdirectory(Library/ultrasonic)
 
-# Link libraries to the executable
-target_link_libraries(TresureRobot
-    PRIVATE
-        pico_stdlib
-        infared
-        motor
-        servo
-        ultrasonic
+# Create executable
+add_executable(main
+    main.cpp
 )
 
-# Enable USB output, disable UART output
-pico_enable_stdio_usb(TresureRobot 1)
-pico_enable_stdio_uart(TresureRobot 0)
+# Include directories if needed
+target_include_directories(main PRIVATE
+    Library/infared
+    Library/motor
+    Library/servo
+    Library/ultrasonic
+)
 
-# Create UF2 file for Pico
-pico_add_extra_outputs(TresureRobot)
+# Link libraries
+target_link_libraries(main
+    pico_stdlib
+    hardware_pwm
+    hardware_gpio
+    hardware_i2c
+    motor
+    servo
+    ultrasonic
+    infrared
+)
+
+# Create UF2 file
+pico_add_extra_outputs(main)

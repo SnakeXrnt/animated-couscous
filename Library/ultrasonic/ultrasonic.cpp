@@ -4,22 +4,22 @@ DistanceSensor::DistanceSensor(const uint TriggerPin, const uint EchoPin) : Trig
 {
 }
 
-double DistanceSensor::measure_distance()
+double DistanceSensor::measure_distance() const
 {
 
-    gpio_put(Trig_, false);
+    gpio_put(Trigger, false);
     sleep_us(2);
-    gpio_put(Trig_, true);
+    gpio_put(Trigger, true);
     sleep_us(10);
-    gpio_put(Trig_, false);
+    gpio_put(Trigger, false);
   
     uint32_t start_time = time_us_32();
-    while (!gpio_get(Echo_)) {
+    while (!gpio_get(Echo)) {
       if (time_us_32() - start_time > 100000)
         return 6;
     }
     start_time = time_us_32();
-    while (gpio_get(Echo_)) {
+    while (gpio_get(Echo)) {
       if (time_us_32() - start_time > 100000)
         return 9;
     }
@@ -29,12 +29,12 @@ double DistanceSensor::measure_distance()
     return distance;
 }
 
-double DistanceSensor::right_sensor_distance(const DistanceSensor Right_Sensor)
+double DistanceSensor::right_sensor_distance(const DistanceSensor Right_Sensor) const
 {
-    return Right_Sensor.measure_distance()
+    return Right_Sensor.measure_distance();
 }
 
-double DistanceSensor::left_sensor_distance(const DistanceSensor Left_Sensor)
+double DistanceSensor::left_sensor_distance(const DistanceSensor Left_Sensor) const
 {
-    return Left_Sensor.measure_distance()
+    return Left_Sensor.measure_distance();
 }

@@ -6,8 +6,8 @@
 class DistanceSensor
 {
 private:
-    const ushort Trigger; //or maybe use ushort
-    const ushort Echo;
+    const uint Trigger; //or maybe use ushort
+    const uint Echo;
 public:
     DistanceSensor( const uint TriggerPin , const uint EchoPin );
 /**
@@ -16,9 +16,9 @@ public:
  * Example:
  * double distance = MainSensor.measure()
  */
-    double measure_distance(); const
-    double right_sensor_distance(const DistanceSensor Right_Sensor);
-    double left_sensor_distance(const DistanceSensor Left_Sensor);
+    double measure_distance() const;
+    double right_sensor_distance(const DistanceSensor Right_Sensor) const;
+    double left_sensor_distance(const DistanceSensor Left_Sensor) const;
 
 };
 

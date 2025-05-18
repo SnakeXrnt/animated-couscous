@@ -16,7 +16,7 @@
 #ifndef __MOTORDRIVER_H_
 #define __MOTORDRIVER_H_
 
-#include "DEV_Config.h"
+#include "../Config/DEV_Config.h"
 #include "PCA9685.h"
 
 //GPIO config

@@ -58,7 +58,7 @@ int main() {
     // Initialize sensors and motors
     DistanceSensor frontSensor(TRIG_PIN, ECHO_PIN);
     Motor motor;
-    Servo servo;
+    Servo servo(14);
 
     sleep_ms(1000); // Wait for sensors and servo to settle
     servo.lookForward();
