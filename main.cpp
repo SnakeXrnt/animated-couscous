@@ -12,42 +12,32 @@
 #define BALANCE_TOLERANCE 1.0
 #define BALANCE_ADJUST_SPEED 50
 #define BALANCE_ADJUST_TIME 60 // ms
-
-void balance(DistanceSensor& frontSensor, Servo& servo, Motor& motor) {
+void balance(Motor& motor) {
     printf("[BALANCE] Checking balance...\n");
 
-    // Look left and measure
-    servo.lookLeft();
-    sleep_ms(200); // Wait for servo to settle
-    double left = frontSensor.measure_distance();
-    printf("[BALANCE] Left distance: %.2f cm\n", left);
+    DistanceSensor right_sen(10, 11);
+    DistanceSensor left_sen(12, 13);
 
-    // Look right and measure
-    servo.lookRight();
-    sleep_ms(200);
-    double right = frontSensor.measure_distance();
-    printf("[BALANCE] Right distance: %.2f cm\n", right);
+    while (true) {
+        double right = right_sen.right_sensor_distance(right_sen); //a verry stupid implementation. if im calling the function with the object i might as well use this, Ill change this asap
+        sleep_ms(100);
+        double left = left_sen.left_sensor_distance(left_sen);
+        sleep_ms(100);
+        double diff = left - right;
+        printf("[BALANCE] Left: %.2f cm, Right: %.2f cm, Diff: %.2f cm\n", left, right, diff);
 
-    // Return to forward
-    servo.lookForward();
-    sleep_ms(200);
-
-    double diff = left - right;
-    printf("[BALANCE] Difference (left - right): %.2f cm\n", diff);
-
-    if (diff > BALANCE_TOLERANCE) {
-        printf("[BALANCE] Too close to left wall, steering right.\n");
-        motor.set(StareRight, BALANCE_ADJUST_SPEED);
-        sleep_ms(BALANCE_ADJUST_TIME);
-        motor.set(Forward, BALANCE_ADJUST_SPEED);
-    } else if (diff < -BALANCE_TOLERANCE) {
-        printf("[BALANCE] Too close to right wall, steering left.\n");
-        motor.set(StareLeft, BALANCE_ADJUST_SPEED);
-        sleep_ms(BALANCE_ADJUST_TIME);
-        motor.set(Forward, BALANCE_ADJUST_SPEED);
-    } else {
-        printf("[BALANCE] Centered, going straight.\n");
-        motor.set(Forward, BALANCE_ADJUST_SPEED);
+        if (diff > BALANCE_TOLERANCE) {
+            printf("[BALANCE] Too close to left wall, steering right.\n");
+            motor.set(StareRight, BALANCE_ADJUST_SPEED);
+        } else if (diff < -BALANCE_TOLERANCE) {
+            printf("[BALANCE] Too close to right wall, steering left.\n");
+            motor.set(StareLeft, BALANCE_ADJUST_SPEED);
+        } else {
+            printf("[BALANCE] Centered, going straight.\n");
+            motor.set(Forward, BALANCE_ADJUST_SPEED);
+            break; // Exit loop when balanced
+        }
+        sleep_ms(100); // Small delay to avoid busy loop
     }
 }
 
@@ -101,7 +91,7 @@ int main() {
             sleep_ms(400); // Move forward a bit
         } else if (front > WALL_DIST) {
             printf("[MAIN] Front is open (%.2f cm). Moving forward with balance.\n", front);
-            balance(frontSensor, servo, motor);
+            balance(motor);
             sleep_ms(400);
         } else if (left > WALL_DIST) {
             printf("[MAIN] Left is open (%.2f cm). Turning left.\n", left);
