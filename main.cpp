@@ -9,9 +9,9 @@
 
 // Thresholds (in cm)
 #define WALL_DIST 20.0
-#define BALANCE_TOLERANCE 1.0
+#define BALANCE_TOLERANCE 2.0
 #define BALANCE_ADJUST_SPEED 50
-#define BALANCE_ADJUST_TIME 60 // ms
+//#define BALANCE_ADJUST_TIME 60 // ms
 void balance(Motor& motor) {
     printf("[BALANCE] Checking balance...\n");
 
@@ -61,6 +61,16 @@ int main() {
         double front = frontSensor.measure_distance();
         printf("[MAIN] Front distance: %.2f cm\n", front);
 
+        while (front > 20)
+        {
+            motor.set(Forward, 60);
+            sleep_ms(10);
+            front =frontSensor.measure_distance();
+            printf("Front distance: %.2f cm\n", front);
+        }
+        printf("[MAIN] Wall is too close, stopping motors.\n");
+        motor.set(Stop, 0);
+        sleep_ms(100);
         // Right hand rule:
         // 1. If right is open, turn right and move forward
         // 2. Else if front is open, move forward (with balance)
@@ -87,8 +97,8 @@ int main() {
             printf("[MAIN] Right is open (%.2f cm). Turning right.\n", right);
             motor.set(Clockwise, 100);
             sleep_ms(350); // Adjust for 90 degree turn
-            motor.set(Forward, 60);
-            sleep_ms(400); // Move forward a bit
+            //motor.set(Forward, 60);
+            //sleep_ms(400); // Move forward a bit
         } else if (front > WALL_DIST) {
             printf("[MAIN] Front is open (%.2f cm). Moving forward with balance.\n", front);
             balance(motor);
@@ -97,16 +107,13 @@ int main() {
             printf("[MAIN] Left is open (%.2f cm). Turning left.\n", left);
             motor.set(CounterClockwise, 100);
             sleep_ms(350); // Adjust for 90 degree turn
-            motor.set(Forward, 60);
-            sleep_ms(400);
+            //motor.set(Forward, 60);
+            //sleep_ms(400);
         } else {
             printf("[MAIN] Dead end. Turning around.\n");
             motor.set(Clockwise, 100);
             sleep_ms(700); // 180 degree turn
         }
-        printf("[MAIN] Stopping motors.\n");
-        motor.set(Stop, 0);
-        sleep_ms(100);
     }
     return 0;
 }
