@@ -7,11 +7,11 @@ DistanceSensor::DistanceSensor(const uint TriggerPin, const uint EchoPin) : Trig
 double DistanceSensor::measure_distance() const
 {
 
-    gpio_put(Trigger, false);
-    sleep_us(2);
-    gpio_put(Trigger, true);
-    sleep_us(10);
-    gpio_put(Trigger, false);
+    gpio_init(Echo);
+    gpio_set_dir(Echo, GPIO_IN);
+    gpio_init(Trigger);
+    gpio_set_dir(Trigger, GPIO_OUT);
+    //printf("gpio initilized \n");
   
     uint32_t start_time = time_us_32();
     while (!gpio_get(Echo)) {
