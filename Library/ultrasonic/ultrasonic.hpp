@@ -16,7 +16,7 @@ public:
  * Example:
  * double distance = MainSensor.measure()
  */
-    float measure_distance() const;
+    float measure_distance();
     float right_sensor_distance( DistanceSensor Right_Sensor);
     float left_sensor_distance( DistanceSensor Left_Sensor);
 

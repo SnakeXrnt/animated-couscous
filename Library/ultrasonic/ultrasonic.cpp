@@ -1,22 +1,22 @@
 #include "ultrasonic.hpp"
+#include <cstdio>
 
 DistanceSensor::DistanceSensor(int TriggerPin, int EchoPin) : Trigger{TriggerPin}, Echo{EchoPin}
 {
 }
-
-float DistanceSensor::measure_distance() const
+float DistanceSensor::measure_distance() 
 {
     gpio_init(Echo);
     gpio_set_dir(Echo, GPIO_IN);
     gpio_init(Trigger);
     gpio_set_dir(Trigger, GPIO_OUT);
-
-    // Send trigger pulse
-    gpio_put(Trigger, 0);
-    sleep_us(2);
-    gpio_put(Trigger, 1);
-    sleep_us(10);
-    gpio_put(Trigger, 0);
+printf("Triggering sensor...\n");
+gpio_put(Trigger, 0);
+sleep_us(2);
+gpio_put(Trigger, 1);
+sleep_us(10);
+gpio_put(Trigger, 0);
+printf("Waiting for echo...\n");
 
     uint32_t start_time = time_us_32();
     while (!gpio_get(Echo)) {

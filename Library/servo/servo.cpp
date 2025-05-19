@@ -12,15 +12,15 @@ void Servo::set_angle(int angle)
 
 void Servo::lookRight()
 {
-    this->set_angle(170); //or 170
+    this->set_angle(245); //or 170
 }
 
 void Servo::lookLeft()
 {
-    this->set_angle(80); //or 10
+    this->set_angle(0); //or 10
 }
 
 void Servo::lookForward()
 {
-    this->set_angle(0);
+    this->set_angle(145);
 }
