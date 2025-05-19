@@ -1,40 +1,45 @@
 #include "ultrasonic.hpp"
 
-DistanceSensor::DistanceSensor(const uint TriggerPin, const uint EchoPin) : Trigger{TriggerPin}, Echo{EchoPin}
+DistanceSensor::DistanceSensor(int TriggerPin, int EchoPin) : Trigger{TriggerPin}, Echo{EchoPin}
 {
 }
 
-double DistanceSensor::measure_distance() const
+float DistanceSensor::measure_distance() const
 {
-
     gpio_init(Echo);
     gpio_set_dir(Echo, GPIO_IN);
     gpio_init(Trigger);
     gpio_set_dir(Trigger, GPIO_OUT);
-    //printf("gpio initilized \n");
-  
+
+    // Send trigger pulse
+    gpio_put(Trigger, 0);
+    sleep_us(2);
+    gpio_put(Trigger, 1);
+    sleep_us(10);
+    gpio_put(Trigger, 0);
+
     uint32_t start_time = time_us_32();
     while (!gpio_get(Echo)) {
-      if (time_us_32() - start_time > 100000)
-        return 6;
+        if (time_us_32() - start_time > 100000)
+            return 6;
     }
     start_time = time_us_32();
     while (gpio_get(Echo)) {
-      if (time_us_32() - start_time > 100000)
-        return 9;
+        if (time_us_32() - start_time > 100000)
+            return 9;
     }
     uint32_t pulse_time = time_us_32() - start_time;
-    float distance = pulse_time * 0.017; //I guess the corrected math
+    float distance = pulse_time * 0.017;
     sleep_ms(10);
     return distance;
 }
 
-double DistanceSensor::right_sensor_distance(const DistanceSensor Right_Sensor) const
+float DistanceSensor::right_sensor_distance( DistanceSensor Right_Sensor) 
 {
     return Right_Sensor.measure_distance();
 }
 
-double DistanceSensor::left_sensor_distance(const DistanceSensor Left_Sensor) const
+float DistanceSensor::left_sensor_distance( DistanceSensor Left_Sensor) 
 {
     return Left_Sensor.measure_distance();
 }

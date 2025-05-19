@@ -6,19 +6,19 @@
 class DistanceSensor
 {
 private:
-    const uint Trigger; //or maybe use ushort
-    const uint Echo;
+    int Trigger; //or maybe use ushort
+    int Echo;
 public:
-    DistanceSensor( const uint TriggerPin , const uint EchoPin );
+    DistanceSensor( int TriggerPin , int EchoPin );
 /**
  * Measure the distance between wall and the sensor
  *
  * Example:
  * double distance = MainSensor.measure()
  */
-    double measure_distance() const;
-    double right_sensor_distance(const DistanceSensor Right_Sensor) const;
-    double left_sensor_distance(const DistanceSensor Left_Sensor) const;
+    float measure_distance() const;
+    float right_sensor_distance( DistanceSensor Right_Sensor);
+    float left_sensor_distance( DistanceSensor Left_Sensor);
 
 };
 
