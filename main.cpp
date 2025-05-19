@@ -4,8 +4,8 @@
 #include "Library/servo/servo.hpp"
 
 // Pin assignments (update as needed)
-#define TRIG_PIN 2
-#define ECHO_PIN 3
+#define TRIG_PIN 14
+#define ECHO_PIN 15
 
 // Thresholds (in cm)
 #define WALL_DIST 20.0
@@ -15,8 +15,8 @@
 void balance(Motor& motor) {
     printf("[BALANCE] Checking balance...\n");
 
-    DistanceSensor right_sen(10, 11);
-    DistanceSensor left_sen(12, 13);
+    DistanceSensor right_sen(18, 19);
+    DistanceSensor left_sen(20, 21);
 
     while (true) {
         double right = right_sen.right_sensor_distance(right_sen); //a verry stupid implementation. if im calling the function with the object i might as well use this, Ill change this asap
@@ -37,18 +37,24 @@ void balance(Motor& motor) {
             motor.set(Forward, BALANCE_ADJUST_SPEED);
             break; // Exit loop when balanced
         }
-        sleep_ms(100); // Small delay to avoid busy loop
+        sleep_ms(50); // Small delay to avoid busy loop
     }
 }
 
 int main() {
     stdio_init_all();
+    sleep_ms(1000);
+
     printf("[INIT] Starting up...\n");
+    sleep_ms(1000);
+    
+
+
 
     // Initialize sensors and motors
     DistanceSensor frontSensor(TRIG_PIN, ECHO_PIN);
     Motor motor;
-    Servo servo(14);
+    Servo servo(16);
 
     sleep_ms(1000); // Wait for sensors and servo to settle
     servo.lookForward();
@@ -115,5 +121,6 @@ int main() {
             sleep_ms(700); // 180 degree turn
         }
     }
+        
     return 0;
 }

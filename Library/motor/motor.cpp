@@ -2,6 +2,11 @@
 
 Motor::Motor()
 {
+   if(DEV_Module_Init()!=0){
+        return;
+    }
+    DEV_Delay_ms(3000);
+    printf("MOTOR TEST");
     Motor_Init();
 }
 
