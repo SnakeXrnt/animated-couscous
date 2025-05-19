@@ -8,10 +8,23 @@ int main() {
 
     stdio_init_all();
 
-    const uint gpio_pin = 19;
-
+    int gpio_pin = 19;
+sleep_ms(200);
     Servo Frontservo(gpio_pin);
+    sleep_ms(200);
+    servo_enable(19);
+
     printf("initialzing servo in %d \n", gpio_pin);
+
+
+for (int i = 0; i < 181; i++)
+{
+    Frontservo.set_angle(i);
+    printf("angle : %d \n", i);
+    sleep_ms(100);
+
+}
+
 
     while (1){
         printf("looking left \n");
