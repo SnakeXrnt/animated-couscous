@@ -2,44 +2,21 @@
 #include "Library/ultrasonic/ultrasonic.hpp"
 #include "Library/motor/motor.hpp"
 #include "Library/servo/servo.hpp"
-
+#include <cmath>
 // Pin assignments (update as needed)
 #define TRIG_PIN 10
 #define ECHO_PIN 11
 
 // Thresholds (in cm)
 #define WALL_DIST 15.0
-#define BALANCE_TOLERANCE 2.0
+#define BALANCE_TOLERANCE 5.0
 #define BALANCE_ADJUST_SPEED 50
 //#define BALANCE_ADJUST_TIME 60 // ms
-void balance(Motor& motor) {
-    printf("[BALANCE] Checking balance...\n");
+//void balance(Motor& motor) {
 
-    DistanceSensor right_sen(8, 9);
-    DistanceSensor left_sen(6, 7);
-
-    while (true) {
-        float right = right_sen.right_sensor_distance(right_sen); //a verry stupid implementation. if im calling the function with the object i might as well use this, Ill change this asap
-        sleep_ms(100);
-        float left = left_sen.left_sensor_distance(left_sen);
-        sleep_ms(100);
-        float diff = left - right;
-        printf("[BALANCE] Left: %.2f cm, Right: %.2f cm, Diff: %.2f cm\n", left, right, diff);
-
-        if (diff > BALANCE_TOLERANCE) {
-            printf("[BALANCE] Too close to left wall, steering right.\n");
-            motor.set(StareRight, BALANCE_ADJUST_SPEED);
-        } else if (diff < -BALANCE_TOLERANCE) {
-            printf("[BALANCE] Too close to right wall, steering left.\n");
-            motor.set(StareLeft, BALANCE_ADJUST_SPEED);
-        } else {
-            printf("[BALANCE] Centered, going straight.\n");
-            motor.set(Forward, BALANCE_ADJUST_SPEED);
-            break; // Exit loop when balanced
-        }
-        sleep_ms(50); // Small delay to avoid busy loop
-    }
-}
+    
+    
+//}
 
 int main() {
     stdio_init_all();
@@ -56,23 +33,49 @@ int main() {
     Motor motor;
     Servo servo(17);
 
+
+    DistanceSensor left_sen(8, 9);
+    DistanceSensor right_sen(6, 7);
+
     sleep_ms(1000); // Wait for sensors and servo to settle
     servo.lookForward();
     printf("[INIT] Initialization complete.\n");
+
+   // float distance_between_walls = right_sen.measure_distance() + left_sen.measure_distance();
 
     while (true) {
         // Always look forward before measuring front
         servo.lookForward();
         sleep_ms(200);
         float front = frontSensor.measure_distance();
+        float left_distance = left_sen.measure_distance();
+        float right_distance = right_sen.measure_distance();
+
         printf("[MAIN] Front distance: %.2f cm\n", front);
 
         while (front > 20)
         {
             motor.set(Forward, 40);
-            sleep_ms(10);
-            front =frontSensor.measure_distance();
+            sleep_ms(15);
+            left_distance = left_sen.measure_distance();
+            if (left_distance < 15)
+            {
+                printf("balance left \n");
+                motor.set(StareLeft, 40);
+                sleep_us(500);
+            }
+                if (right_distance < 15)
+            {
+                printf("balance left \n");
+                motor.set(StareRight, 40);
+                sleep_us(500);
+            }
+            
+            front = frontSensor.measure_distance();
             printf("Front distance: %.2f cm\n", front);
+            printf("left distance: %.2f cm\n", left_distance);
+
+            
 
         }
         printf("[MAIN] Wall is too close, stopping motors.\n");

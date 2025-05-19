@@ -2,6 +2,7 @@
     "files.associations": {
         "debug.h": "c",
         "gpio.h": "c",
-        "dev_config.h": "c"
+        "dev_config.h": "c",
+        "cmath": "cpp"
     }
 }
