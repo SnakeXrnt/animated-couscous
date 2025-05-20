@@ -58,13 +58,13 @@ int main() {
             motor.set(Forward, 40);
             sleep_ms(15);
             left_distance = left_sen.measure_distance();
-            if (left_distance < 15)
+            if (left_distance < 8)
             {
                 printf("balance left \n");
                 motor.set(StareLeft, 40);
                 sleep_us(500);
             }
-                if (right_distance < 15)
+                if (right_distance < 8)
             {
                 printf("balance left \n");
                 motor.set(StareRight, 40);
